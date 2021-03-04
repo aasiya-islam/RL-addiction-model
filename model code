@@ -122,7 +122,9 @@ rpe_df = pd.DataFrame()
 rpe_df["epoch"] = index
 rpe_df["rpe"] = rpe_values
 
-rpe_df
+
+rpe_df_3 = rpe_df[rpe_df.epoch % 3 == 0]
+
 #plt.plot(x=rpe_df.epoch, y=rpe_df.rpe)
 ax = plt.gca()
 rpe_df.plot(kind="line", x="epoch", y="rpe", ax=ax)
@@ -133,3 +135,69 @@ plt.show()
 
 plt.plot(index, rpe_values)
 plt.show()
+
+
+x1=rpe_df_3.epoch
+y1=rpe_df_3.rpe
+plt.plot(x1,y1)
+plt.xlabel("Epoch")
+plt.ylabel("RPE")
+plt.title("RPE vs. Epoch")
+plt.show()
+plt.show()
+
+
+#threshold_df = rpe_df_3.loc[(rpe_df_3.epoch <= 0.04),'epoch']=0
+
+#hresho3.loc[rpe_df_3['rpe' <= 0.04]] = 0
+
+# rpec[(df.Event == 'Dance'),'Event']='Hip-Hop'
+rpe_df_3.loc[(rpe_df_3.rpe <= 0.04),'rpe']=0.04
+print(rpe_df_3)
+
+#pe_df_3.loc[rpe_df_3['rpe'] <= 0.04] =0.04
+# print(rpe_df_3)
+
+x2=rpe_df_3.epoch
+y2=rpe_df_3.rpe
+plt.plot(x2,y2)
+plt.xlabel("Epoch")
+plt.ylabel("RPE")
+plt.title("RPE vs. Epoch- Dopamine")
+plt.show()
+
+rpe_values_3 = rpe_values[::3]
+epoch_values_3 = index[::3]
+epoch_values_3_shift = []
+
+# for i in index:
+#     if i % 3 == 0:
+#         epoch_values_3.append(i)
+
+        
+
+# for i in rpe_values:
+#     if i % 3 == 0:
+#         rpe_values_3.append(i)
+    
+    
+#rint(len(rpe_values_3))
+for i in reversed(epoch_values_3):
+    epoch_values_3.append(i)
+
+for i in epoch_values_3:
+    epoch_values_3_shift.append(epoch_values_3)
+
+
+for i in epoch_values_3:
+    epoch_values_3_shift.append(i + 333)
+    
+for i in reversed(rpe_values_3):
+    rpe_values_3.append(i)
+
+#rint(epoch_values_3_shift)
+
+x3=epoch_values_3_shift
+y3=rpe_values_3
+
+
