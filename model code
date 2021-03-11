@@ -4,7 +4,7 @@ import pandas as pd
 index = [] #x-coordinate
 rpe_values = []
 
-class Enviroment: # Creats the class Enviroment
+class Enviroment: 
     
     STATE_TRANSITIONS = {"Cue" : "Wait", 
                          "Wait" : "Got Lit", 
@@ -21,14 +21,13 @@ class Enviroment: # Creats the class Enviroment
     
     def __init__(self):
         self.state = "Cue"
-        #Begin in state self (cue)
     
     def transition(self):
-        state = self.state #Current state
+        state = self.state 
         new_state = Enviroment.STATE_TRANSITIONS[state]
         new_reward = Enviroment.REWARD_TRANSITIONS[new_state]
-        self.state = new_state #Updates current state
-        return (new_state, new_reward) #New state and new reward defined
+        self.state = new_state 
+        return (new_state, new_reward)
 
 class TDAgent():
     def __init__(self, gamma=0.8, alpha=0.08, eta=0.05): #Random Values for g and a
@@ -38,14 +37,12 @@ class TDAgent():
                   "Got Lit" : 0,
                   None : 0}
         
-        #initializes V table as zero since number of states so small
-        
         self.gamma = gamma
         self.alpha = alpha
         self.eta = eta
         
-        # This method implements TD-learning
-        
+    
+    # implements TD-learning    
     
     def TD_learn(self, state1, reward1, state2, prev_rpe):
         
@@ -55,11 +52,8 @@ class TDAgent():
         a = self.alpha
         h = self.eta
         
-        # Calculate RPE and new estimate of V1
-        # update it with each rpe
         
-        
-        rpe = g**3 * (reward1 + V2) + 1 - (V1 + (h * prev_rpe)) #this is where delta p goes
+        rpe = g**3 * (reward1 + V2) + 1 - (V1 + (h * prev_rpe)) 
         V1 = V1 + (a * rpe)
         
         # Update the internal value of V1
@@ -76,7 +70,7 @@ def rl_loop(environment, agent): #loops the enviro and agent
         state = environment.state
         reward = environment.REWARD_TRANSITIONS[state]
         
-        # This is the moment in which we learn
+        # moment where we learn
         transition = environment.transition()
         new_state = None
         if transition is not None:
@@ -86,7 +80,6 @@ def rl_loop(environment, agent): #loops the enviro and agent
 
         
 def run_trials(environment, agent, n):
-    #runs n amount of trials 
     for j in range(n):
         environment.state = "Cue"
         rl_loop(environment, agent) 
@@ -115,8 +108,6 @@ plt.show()
 for i in range (1,334):
     index.append(i)
 
-#print(len(rpe_values))
-#print(index)
 
 rpe_df = pd.DataFrame()
 rpe_df["epoch"] = index
@@ -125,16 +116,9 @@ rpe_df["rpe"] = rpe_values
 
 rpe_df_3 = rpe_df[rpe_df.epoch % 3 == 0]
 
-#plt.plot(x=rpe_df.epoch, y=rpe_df.rpe)
-ax = plt.gca()
-rpe_df.plot(kind="line", x="epoch", y="rpe", ax=ax)
-plt.xlabel("Epoch")
-plt.ylabel("RPE")
-plt.title("RPE vs. Epoch")
-plt.show()
 
-plt.plot(index, rpe_values)
-plt.show()
+# plt.plot(index, rpe_values)
+# plt.show()
 
 
 x1=rpe_df_3.epoch
@@ -144,19 +128,12 @@ plt.xlabel("Epoch")
 plt.ylabel("RPE")
 plt.title("RPE vs. Epoch")
 plt.show()
-plt.show()
 
 
-#threshold_df = rpe_df_3.loc[(rpe_df_3.epoch <= 0.04),'epoch']=0
 
-#hresho3.loc[rpe_df_3['rpe' <= 0.04]] = 0
+baseline = 0.04
+rpe_df_3.loc[(rpe_df_3.rpe <= baseline),'rpe']=baseline
 
-# rpec[(df.Event == 'Dance'),'Event']='Hip-Hop'
-rpe_df_3.loc[(rpe_df_3.rpe <= 0.04),'rpe']=0.04
-print(rpe_df_3)
-
-#pe_df_3.loc[rpe_df_3['rpe'] <= 0.04] =0.04
-# print(rpe_df_3)
 
 x2=rpe_df_3.epoch
 y2=rpe_df_3.rpe
@@ -168,36 +145,31 @@ plt.show()
 
 rpe_values_3 = rpe_values[::3]
 epoch_values_3 = index[::3]
-epoch_values_3_shift = []
 
-# for i in index:
-#     if i % 3 == 0:
-#         epoch_values_3.append(i)
+rpe_values_3_shift = rpe_values[::3]
+epoch_values_3_shift = index[::3]
 
-        
-
-# for i in rpe_values:
-#     if i % 3 == 0:
-#         rpe_values_3.append(i)
-    
-    
-#rint(len(rpe_values_3))
-for i in reversed(epoch_values_3):
-    epoch_values_3.append(i)
-
-for i in epoch_values_3:
-    epoch_values_3_shift.append(epoch_values_3)
 
 
 for i in epoch_values_3:
     epoch_values_3_shift.append(i + 333)
     
-for i in reversed(rpe_values_3):
-    rpe_values_3.append(i)
+for i in epoch_values_3:
+    epoch_values_3_shift.append(i + 666)
+    
 
-#rint(epoch_values_3_shift)
+
+for i in reversed(rpe_values_3):
+    rpe_values_3_shift.append(i)
+for i in (rpe_values_3):
+    rpe_values_3_shift.append(i)
+
 
 x3=epoch_values_3_shift
-y3=rpe_values_3
+y3=rpe_values_3_shift
 
-
+plt.plot(x3,y3)
+plt.xlabel("Epoch")
+plt.ylabel("RPE")
+plt.title("RPE vs. Epoch - Reinstatement After Extinction")
+plt.show()
