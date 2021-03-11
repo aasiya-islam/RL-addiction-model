@@ -115,7 +115,7 @@ rpe_df["rpe"] = rpe_values
 
 
 rpe_df_3 = rpe_df[rpe_df.epoch % 3 == 0]
-
+rpe_df_3_copy = rpe_df[rpe_df.epoch % 3 == 0]
 
 # plt.plot(index, rpe_values)
 # plt.show()
@@ -143,10 +143,10 @@ plt.ylabel("RPE")
 plt.title("RPE vs. Epoch- Dopamine")
 plt.show()
 
-rpe_values_3 = rpe_values[::3]
+rpe_values_3 = rpe_df_3_copy["rpe"].tolist()
 epoch_values_3 = index[::3]
 
-rpe_values_3_shift = rpe_values[::3]
+rpe_values_3_shift = rpe_df_3_copy["rpe"].tolist()
 epoch_values_3_shift = index[::3]
 
 
@@ -160,11 +160,11 @@ for i in epoch_values_3:
 
 
 for i in reversed(rpe_values_3):
-    rpe_values_3_shift.append(i)
+    rpe_values_3_shift.append(i/2)
 for i in (rpe_values_3):
-    rpe_values_3_shift.append(i)
+    rpe_values_3_shift.append(i/2)
 
-
+print(rpe_values_3_shift)
 x3=epoch_values_3_shift
 y3=rpe_values_3_shift
 
